@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Flowdesk · ระบบ AI Agent และ Workflow ภายในองค์กร</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Prompt:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EDF0F3;--sf:#fff;--ink:#15212E;--mu:#667385;--ln:#DDE3EA;--ac:#2F4BFF;--acs:#E6EAFF;--ok:#0E9F6E;--oks:#DDF5EC;--wn:#B26A00;--wns:#FFF0D6;--bd:#D6336C;--side:#15212E;--sideink:#C9D3DF;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1620;--sf:#172230;--ink:#E8EDF3;--mu:#93A1B3;--ln:#263446;--ac:#8593FF;--acs:#232C57;--ok:#3DD6A0;--oks:#12342B;--wn:#F2B04A;--wns:#3A2C12;--bd:#FF7AA8;--side:#0B1119}}
+:root[data-theme="dark"]{--bg:#0F1620;--sf:#172230;--ink:#E8EDF3;--mu:#93A1B3;--ln:#263446;--ac:#8593FF;--acs:#232C57;--ok:#3DD6A0;--oks:#12342B;--wn:#F2B04A;--wns:#3A2C12;--bd:#FF7AA8;--side:#0B1119}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.6 "IBM Plex Sans Thai",system-ui,sans-serif}
+h1,h2,h3{font-family:Prompt,"IBM Plex Sans Thai",sans-serif;margin:0;line-height:1.3}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+aside{background:var(--side);color:var(--sideink);padding:22px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:6px}
+.brand{display:flex;align-items:center;gap:10px;padding:0 10px 18px;color:#fff;font:600 20px Prompt}
+.mark{width:30px;height:30px;border-radius:9px;background:var(--ac);display:grid;place-items:center;color:#fff}
+nav button{display:flex;width:100%;align-items:center;gap:10px;background:none;border:0;border-radius:10px;padding:10px 12px;color:inherit;text-align:left}
+nav button:hover{background:rgba(255,255,255,.07)}
+nav button[aria-current=true]{background:rgba(255,255,255,.12);color:#fff}
+nav .n{margin-left:auto;background:var(--ac);color:#fff;border-radius:99px;font-size:12px;padding:0 8px}
+.sidefoot{margin-top:auto;font-size:13px;padding:10px;border-top:1px solid rgba(255,255,255,.1)}
+.sidefoot button{background:none;border:1px solid rgba(255,255,255,.2);color:inherit;border-radius:8px;padding:4px 10px;margin-top:8px}
+main{padding:28px clamp(16px,3vw,40px) 60px;min-width:0}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.top h1{font-size:26px}.top p{margin:2px 0 0;color:var(--mu)}
+.btn{background:var(--ac);color:#fff;border:0;border-radius:10px;padding:9px 16px;font-weight:500}
+.btn.ghost{background:var(--sf);color:var(--ink);border:1px solid var(--ln)}
+.btn.sm{padding:5px 12px;font-size:13px}.btn:disabled{opacity:.5;cursor:default}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:14px;padding:18px}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin-bottom:16px}
+.kpi .v{font:600 30px Prompt;letter-spacing:-.5px}.kpi .l{color:var(--mu);font-size:13px}
+.two{grid-template-columns:minmax(0,3fr) minmax(0,2fr)}
+.card h3{font-size:16px;margin-bottom:12px}
+.bars{display:flex;align-items:flex-end;gap:10px;height:150px;padding-top:6px}
+.bars div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:12px;color:var(--mu);gap:6px}
+.bars i{display:block;width:100%;background:var(--acs);border-radius:6px 6px 2px 2px;transition:height .4s}
+.bars div:last-child i{background:var(--ac)}
+.row{display:flex;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--ln)}
+.row:first-of-type{border-top:0}.row .g{flex:1;min-width:0}.row small{color:var(--mu);display:block}
+.tag{display:inline-block;font-size:12px;border-radius:99px;padding:1px 10px;background:var(--acs);color:var(--ac)}
+.tag.ok{background:var(--oks);color:var(--ok)}.tag.wn{background:var(--wns);color:var(--wn)}
+.sw{width:42px;height:24px;border-radius:99px;border:0;background:var(--ln);position:relative;flex:none}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .2s}
+.sw[aria-checked=true]{background:var(--ok)}.sw[aria-checked=true]::after{left:21px}
+.wfs{grid-template-columns:260px minmax(0,1fr);align-items:start}
+.wflist button.it{display:block;width:100%;text-align:left;background:var(--sf);border:1px solid var(--ln);border-radius:12px;padding:12px 14px;margin-bottom:10px}
+.wflist button.it[aria-current=true]{border-color:var(--ac);box-shadow:0 0 0 3px var(--acs)}
+.canvas{display:flex;align-items:stretch;overflow-x:auto;padding:18px 4px 10px;gap:0}
+.node{flex:0 0 168px;border:1.5px solid var(--ln);border-top:4px solid var(--c);border-radius:12px;padding:12px;background:var(--sf);transition:transform .25s,box-shadow .25s,border-color .25s}
+.node b{font:600 14px Prompt;display:block}.node small{color:var(--mu);display:block;margin-top:2px;line-height:1.4}
+.node .k{font-size:12px;color:var(--c);font-weight:600}
+.node.act{transform:translateY(-6px);box-shadow:0 10px 24px -8px var(--c);border-color:var(--c)}
+.node.done{background:var(--oks);border-color:var(--ok)}
+.node.done .st{display:block}.st{display:none;font-size:12px;color:var(--ok);margin-top:6px}
+.link{flex:0 0 34px;align-self:center;height:2px;background:var(--ln);position:relative}
+.link::after{content:"";position:absolute;right:-1px;top:-4px;border:5px solid transparent;border-left:8px solid var(--ln)}
+.link.on{background:var(--ok)}.link.on::after{border-left-color:var(--ok)}
+.t-t{--c:#7A5AF8}.t-a{--c:var(--ac)}.t-h{--c:#C27803}.t-x{--c:var(--ok)}
+.chat{display:grid;grid-template-columns:240px minmax(0,1fr);gap:16px}
+.msgs{height:min(55vh,460px);overflow:auto;display:flex;flex-direction:column;gap:10px;padding:4px}
+.m{max-width:82%;padding:10px 14px;border-radius:14px;white-space:pre-wrap}
+.m.u{align-self:flex-end;background:var(--ac);color:#fff;border-bottom-right-radius:4px}
+.m.b{background:var(--bg);border-bottom-left-radius:4px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.chips button{background:var(--bg);border:1px solid var(--ln);border-radius:99px;padding:4px 12px;font-size:13px}
+.inp{display:flex;gap:8px}.inp input{flex:1;min-width:0;border:1px solid var(--ln);background:var(--bg);color:var(--ink);border-radius:10px;padding:10px 14px;font:inherit}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:10px;opacity:0;pointer-events:none;transition:.25s;z-index:9}
+#toast.s{opacity:1;transform:translate(-50%,0)}
+.empty{color:var(--mu);padding:14px 0}
+@media(max-width:900px){.app{grid-template-columns:1fr}aside{position:static;height:auto;flex-direction:row;overflow-x:auto;padding:10px;align-items:center}
+.brand{padding:0 8px}nav{display:flex;gap:4px}nav button{white-space:nowrap}.sidefoot{display:none}
+.two,.wfs,.chat{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside>
+ <div class="brand"><span class="mark">✦</span>Flowdesk</div>
+ <nav id="nav"></nav>
+ <div class="sidefoot">บริษัท ตัวอย่าง จำกัด<br><span style="opacity:.7">โหมดสาธิต · ข้อมูลจำลอง</span><br><button id="theme">สลับธีม</button></div>
+</aside>
+<main id="view"></main>
+</div>
+<div id="toast" role="status"></div>
+<script>
+const $=s=>document.querySelector(s);
+const K={t:['เริ่มต้น','t-t'],a:['AI Agent','t-a'],h:['รออนุมัติ','t-h'],x:['ดำเนินการ','t-x']};
+const W=[
+{id:'leave',name:'อนุมัติใบลา',dept:'HR',on:true,runs:128,steps:[['t','ฟอร์มใบลาเข้า','พนักงานส่งผ่านเว็บ/LINE'],['a','ตรวจนโยบาย','เช็กสิทธิ์วันลาคงเหลือ'],['h','หัวหน้าอนุมัติ','ส่งการ์ดอนุมัติ'],['x','อัปเดตปฏิทิน','แจ้งผลทาง LINE']]},
+{id:'inv',name:'ตรวจใบแจ้งหนี้',dept:'การเงิน',on:true,runs:214,steps:[['t','อีเมลมีไฟล์แนบ','invoice@บริษัท'],['a','อ่านเอกสาร','ดึงยอด เลขที่ ผู้ขาย'],['a','จับคู่ใบสั่งซื้อ','ตรวจ PO และยอดต่าง'],['h','การเงินอนุมัติ','เฉพาะยอดเกิน ฿50,000'],['x','บันทึกบัญชี','ส่งเข้าระบบ ERP']]},
+{id:'it',name:'ตอบ IT Helpdesk',dept:'IT',on:true,runs:342,steps:[['t','Ticket ใหม่','จากพอร์ทัลพนักงาน'],['a','จัดหมวดและเร่งด่วน','อ่านอาการ ระบุทีมที่ดูแล'],['a','เสนอวิธีแก้','ค้นฐานความรู้ภายใน'],['x','ตอบกลับหรือส่งต่อ','ปิดงานเองถ้ามั่นใจ']]},
+{id:'onb',name:'ต้อนรับพนักงานใหม่',dept:'HR',on:false,runs:19,steps:[['t','สัญญาจ้างลงนาม','จากระบบ HR'],['x','สร้างบัญชีอีเมล','ตามแผนก'],['a','เขียนแผน 30 วัน','จากตำแหน่งและทีม'],['h','หัวหน้ายืนยัน','ตรวจแผนก่อนส่ง'],['x','ส่งชุดต้อนรับ','อีเมลและนัดปฐมนิเทศ']]}];
+const A={hr:{n:'HR Agent',d:'ลา สวัสดิการ นโยบาย',chips:['วันลาพักร้อนเหลือเท่าไร','ขั้นตอนขอลาป่วย'],
+ r:[['พักร้อน','ตอนนี้คุณเหลือสิทธิ์ลาพักร้อน 8 วันในปีนี้ ต้องการให้ฉันเปิดใบลาและส่งให้หัวหน้าอนุมัติเลยไหม'],['ลาป่วย','ลาป่วยไม่เกิน 30 วันต่อปีโดยได้รับค่าจ้าง หากลาเกิน 3 วันต้องแนบใบรับรองแพทย์ ฉันสร้างใบลาให้ได้ทันที'],['ประกัน','แผนประกันกลุ่มครอบคลุมผู้ป่วยนอก 2,000 บาทต่อครั้ง และผู้ป่วยใน 100,000 บาทต่อปี']],f:'ฉันตอบเรื่องวันลา สวัสดิการ และนโยบายได้ ลองถามเรื่องวันลาพักร้อนดูครับ'},
+ fin:{n:'Finance Agent',d:'ใบแจ้งหนี้ เบิกจ่าย',chips:['สถานะ INV-2093','เบิกค่าเดินทางทำอย่างไร'],
+ r:[['2093','INV-2093 ยอด ฿48,500 ตรงกับ PO-1187 และอยู่ระหว่างรอผู้อนุมัติ คาดว่าจ่ายภายใน 3 วันทำการ'],['เบิก','แนบใบเสร็จผ่านแบบฟอร์มเบิกจ่าย ฉันจะตรวจยอดและหมวดค่าใช้จ่ายให้ก่อนส่งอนุมัติ ปกติเสร็จใน 2 วันทำการ']],f:'ฉันช่วยเรื่องใบแจ้งหนี้และการเบิกจ่ายได้ ลองถามสถานะใบแจ้งหนี้ดูครับ'},
+ it:{n:'IT Agent',d:'อุปกรณ์ บัญชี ระบบ',chips:['ลืมรหัสผ่าน VPN','ขอสิทธิ์เข้า CRM'],
+ r:[['vpn','รีเซ็ตรหัสผ่าน VPN ที่พอร์ทัลพนักงาน เมนู บัญชีของฉัน แล้วยืนยันตัวตนด้วยแอป ถ้ายังเข้าไม่ได้ฉันเปิด Ticket ให้ทีม IT ได้'],['crm','คำขอสิทธิ์ CRM ต้องผ่านหัวหน้าอนุมัติ ฉันส่งคำขอให้แล้ว และแจ้งผลทางอีเมลเมื่อเสร็จ']],f:'ฉันช่วยเรื่องอุปกรณ์ บัญชีผู้ใช้ และระบบภายในได้ ลองบอกอาการที่เจอดูครับ'}};
+let S={tab:'ov',wf:'leave',ag:'hr',run:false,week:[38,52,47,61,58,44,0],pend:[
+ {w:'ศิริพร ก.',x:'ลาพักร้อน 3 วัน (14–16 ต.ค.)',ai:'ตรงตามนโยบาย เหลือสิทธิ์ 8 วัน'},
+ {w:'ฝ่ายจัดซื้อ',x:'ใบแจ้งหนี้ INV-2093 ฿48,500',ai:'ตรงกับ PO-1187 ยอดต่าง 0%'},
+ {w:'ธนา ว.',x:'ขอสิทธิ์เข้าระบบ CRM',ai:'ตำแหน่งเหมาะสม ความเสี่ยงต่ำ'}],
+ log:[['09:42','ตรวจใบแจ้งหนี้','INV-2091 ผ่านอัตโนมัติ',1],['09:15','ตอบ IT Helpdesk','ตอบเรื่อง VPN สำเร็จ ปิดงานแล้ว',1],['08:58','อนุมัติใบลา','ส่งต่อหัวหน้า รออนุมัติ',1],['08:31','ตรวจใบแจ้งหนี้','INV-2089 ยอดไม่ตรง PO ส่งให้คนตรวจ',0]],
+ chat:{hr:[],fin:[],it:[]},done:12};
+S.week[6]=S.done;
+const now=()=>new Date().toTimeString().slice(0,5);
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('s');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('s'),2200)}
+const tabs=[['ov','ภาพรวม'],['wf','เวิร์กโฟลว์'],['ag','ผู้ช่วย AI'],['lg','บันทึกการทำงาน']];
+function nav(){$('#nav').innerHTML=tabs.map(([k,l])=>`<button data-t="${k}" aria-current="${S.tab==k}">${l}${k=='ov'&&S.pend.length?`<span class="n">${S.pend.length}</span>`:''}</button>`).join('');
+ $('#nav').onclick=e=>{const b=e.target.closest('button');if(b){S.tab=b.dataset.t;draw()}}}
+function draw(){nav();({ov,wf,ag,lg})[S.tab]()}
+function ov(){const tot=S.week.reduce((a,b)=>a+b,0),mx=Math.max(...S.week);
+const days=['จ.','อ.','พ.','พฤ.','ศ.','ส.','วันนี้'];
+$('#view').innerHTML=`<div class="top"><div><h1>สวัสดีตอนเช้า</h1><p>ระบบทำงานอัตโนมัติแทนทีมคุณอยู่ ${W.filter(w=>w.on).length} เวิร์กโฟลว์</p></div><button class="btn" id="go">เปิดเวิร์กโฟลว์</button></div>
+<div class="grid kpis"><div class="card kpi"><div class="v">${S.done}</div><div class="l">งานที่ทำเสร็จวันนี้</div></div>
+<div class="card kpi"><div class="v">${Math.round(tot*0.4)} ชม.</div><div class="l">เวลาที่ประหยัดได้สัปดาห์นี้</div></div>
+<div class="card kpi"><div class="v">94%</div><div class="l">จัดการเองได้โดยไม่ต้องใช้คน</div></div>
+<div class="card kpi"><div class="v">${S.pend.length}</div><div class="l">รอการอนุมัติจากคุณ</div></div></div>
+<div class="grid two"><div class="card"><h3>รายการรออนุมัติ</h3>${S.pend.length?S.pend.map((p,i)=>`<div class="row"><div class="g"><b>${p.x}</b><small>${p.w} · AI สรุป: ${p.ai}</small></div><button class="btn ghost sm" data-r="${i}">ปฏิเสธ</button><button class="btn sm" data-a="${i}">อนุมัติ</button></div>`).join(''):'<div class="empty">ไม่มีรายการค้าง คุณจัดการครบแล้ว</div>'}</div>
+<div class="card"><h3>งานที่ทำเสร็จ 7 วันล่าสุด</h3><div class="bars">${S.week.map((v,i)=>`<div><span>${v}</span><i style="height:${v/mx*100}px"></i><span>${days[i]}</span></div>`).join('')}</div></div></div>`;
+$('#go').onclick=()=>{S.tab='wf';draw()};
+$('#view').onclick=e=>{const a=e.target.closest('[data-a]'),r=e.target.closest('[data-r]');if(!a&&!r)return;
+ const i=+(a||r).dataset[a?'a':'r'],p=S.pend.splice(i,1)[0];S.done++;S.week[6]++;
+ S.log.unshift([now(),'การอนุมัติ',`${a?'อนุมัติ':'ปฏิเสธ'}: ${p.x}`,1]);toast(a?'อนุมัติแล้ว':'ปฏิเสธแล้ว');draw()}}
+function wf(){const w=W.find(x=>x.id==S.wf);
+$('#view').innerHTML=`<div class="top"><div><h1>เวิร์กโฟลว์</h1><p>ดูขั้นตอนและทดลองรันได้ทันที</p></div></div>
+<div class="grid wfs"><div class="wflist">${W.map(x=>`<button class="it" data-id="${x.id}" aria-current="${x.id==S.wf}"><b>${x.name}</b><small style="color:var(--mu)">${x.dept} · รันแล้ว ${x.runs} ครั้ง</small></button>`).join('')}</div>
+<div class="card"><div class="row" style="border:0;padding-top:0"><div class="g"><h2 style="font-size:20px">${w.name}</h2><small>${w.dept} · ${w.steps.length} ขั้นตอน</small></div>
+<span class="tag ${w.on?'ok':'wn'}">${w.on?'เปิดใช้งาน':'ปิดอยู่'}</span><button class="sw" role="switch" aria-label="เปิดปิดเวิร์กโฟลว์" aria-checked="${w.on}" id="sw"></button></div>
+<div class="canvas" id="cv">${w.steps.map((s,i)=>`${i?'<div class="link"></div>':''}<div class="node ${K[s[0]][1]}"><span class="k">${K[s[0]][0]}</span><b>${s[1]}</b><small>${s[2]}</small><span class="st">เสร็จแล้ว</span></div>`).join('')}</div>
+<button class="btn" id="run" ${S.run||!w.on?'disabled':''}>${w.on?'ทดลองรัน':'เปิดใช้งานก่อนจึงรันได้'}</button></div></div>`;
+$('.wflist').onclick=e=>{const b=e.target.closest('.it');if(b&&!S.run){S.wf=b.dataset.id;wf()}};
+$('#sw').onclick=()=>{if(S.run)return;w.on=!w.on;toast(w.on?'เปิดใช้งานแล้ว':'ปิดเวิร์กโฟลว์แล้ว');nav();wf()};
+$('#run').onclick=async()=>{S.run=true;$('#run').disabled=true;const ns=[...document.querySelectorAll('.node')],ls=[...document.querySelectorAll('.link')];
+ for(let i=0;i<ns.length;i++){ns[i].classList.add('act');ns[i].scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});await new Promise(r=>setTimeout(r,750));ns[i].classList.remove('act');ns[i].classList.add('done');if(ls[i])ls[i].classList.add('on')}
+ S.run=false;w.runs++;S.done++;S.week[6]++;S.log.unshift([now(),w.name,'ทดลองรันสำเร็จครบทุกขั้นตอน',1]);toast('รันสำเร็จ');$('#run').disabled=false}}
+function ag(){const a=A[S.ag],c=S.chat[S.ag];
+$('#view').innerHTML=`<div class="top"><div><h1>ผู้ช่วย AI</h1><p>ถามเรื่องงานภายในได้เลย แล้วให้ AI ทำให้</p></div></div>
+<div class="chat"><div class="wflist">${Object.entries(A).map(([k,v])=>`<button class="it" data-k="${k}" aria-current="${k==S.ag}"><b>${v.n}</b><small style="color:var(--mu)">${v.d}</small></button>`).join('')}</div>
+<div class="card"><div class="msgs" id="ms">${c.length?c.map(m=>`<div class="m ${m[0]}">${m[1]}</div>`).join(''):`<div class="m b">สวัสดีครับ ฉันคือ ${a.n} ช่วยเรื่อง${a.d}ได้</div>`}</div>
+<div class="chips">${a.chips.map(t=>`<button>${t}</button>`).join('')}</div>
+<div class="inp"><input id="in" placeholder="พิมพ์คำถามที่นี่" aria-label="ข้อความ"><button class="btn" id="send">ส่ง</button></div></div></div>`;
+const ms=$('#ms');ms.scrollTop=ms.scrollHeight;
+document.querySelector('.wflist').onclick=e=>{const b=e.target.closest('.it');if(b){S.ag=b.dataset.k;ag()}};
+const send=t=>{t=t.trim();if(!t)return;c.push(['u',t]);ag();const k=S.ag;
+ setTimeout(()=>{const hit=A[k].r.find(r=>t.toLowerCase().includes(r[0]));S.chat[k].push(['b',hit?hit[1]:A[k].f]);S.log.unshift([now(),A[k].n,'ตอบคำถามพนักงาน',1]);if(S.tab=='ag'&&S.ag==k)ag()},650)};
+$('#send').onclick=()=>send($('#in').value);$('#in').onkeydown=e=>{if(e.key=='Enter'&&!e.isComposing)send(e.target.value)};
+document.querySelector('.chips').onclick=e=>{if(e.target.tagName=='BUTTON')send(e.target.textContent)}}
+function lg(){$('#view').innerHTML=`<div class="top"><div><h1>บันทึกการทำงาน</h1><p>ทุกการตัดสินใจของ AI ตรวจย้อนหลังได้</p></div></div>
+<div class="card">${S.log.map(l=>`<div class="row"><span style="color:var(--mu);width:48px">${l[0]}</span><div class="g"><b>${l[1]}</b><small>${l[2]}</small></div><span class="tag ${l[3]?'ok':'wn'}">${l[3]?'สำเร็จ':'ส่งให้คนตรวจ'}</span></div>`).join('')}</div>`}
+$('#theme').onclick=()=>{const d=document.documentElement,dark=getComputedStyle(d).getPropertyValue('--bg').trim()=='#0F1620';d.dataset.theme=dark?'light':'dark'};
+draw();
+</script>
+</body>
+</html>
