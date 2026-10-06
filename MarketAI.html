@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MarketAI – Digital Marketing Assistant</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F6F7FB;--card:#fff;--ink:#111936;--mute:#7A839A;--line:#E8EAF2;--acc:#5B52F0;--accl:#EEEDFE;--good:#16A34A;--err:#C2261B}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Inter,"Noto Sans Thai",Tahoma,sans-serif;display:flex;min-height:100vh}
+aside{width:197px;flex:none;background:var(--card);border-right:1px solid var(--line);padding:14px 10px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.logo{display:flex;gap:10px;align-items:center;padding:4px 8px 22px}
+.logo i{width:32px;height:32px;border-radius:9px;background:var(--acc);color:#fff;display:grid;place-items:center;font-style:normal}
+.logo b{display:block;font-size:15px;line-height:1.1}.logo small{font-size:10px;color:var(--mute)}
+.nav a{display:flex;gap:11px;align-items:center;padding:10px 12px;border-radius:9px;color:#4A5370;font-weight:500;font-size:13.5px;cursor:pointer;margin-bottom:2px}
+.nav a span{width:16px;text-align:center;color:var(--mute)}
+.nav a.on{background:var(--accl);color:var(--acc)}.nav a.on span{color:var(--acc)}
+.promo{margin-top:auto;background:linear-gradient(135deg,#5B52F0,#8B6CF6);color:#fff;border-radius:12px;padding:14px;margin-bottom:12px}
+.promo small{display:block;font-size:10px;opacity:.8}.promo b{font-size:14px;line-height:1.3;display:block;margin:4px 0}
+main{flex:1;min-width:0;padding:22px 28px}
+.top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.top small{font-size:10px;letter-spacing:.08em;color:var(--mute);font-weight:600;text-transform:uppercase}
+h1{margin:0;font-size:22px}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--card);border-radius:20px;padding:5px 12px;font-size:11px;color:#4A5370}
+.pill i{width:6px;height:6px;border-radius:50%;background:#B8BED0}.pill.on i{background:var(--good)}
+.av{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--accl);color:var(--acc);font-size:11px;font-weight:700;margin-left:8px;vertical-align:middle}
+.hero{background:linear-gradient(120deg,#231F6B,#4B46D8 60%,#5B52F0);color:#fff;border-radius:18px;padding:26px 28px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.hero em{font-style:normal;font-size:10px;font-weight:700;background:rgba(255,255,255,.15);border-radius:20px;padding:4px 10px}
+.hero h2{margin:12px 0 6px;font-size:23px;line-height:1.35}.hero p{margin:0;font-size:12px;opacity:.9}
+.btn{font:inherit;font-weight:600;font-size:14px;border:0;border-radius:9px;padding:10px 18px;cursor:pointer;background:var(--acc);color:#fff}
+.btn.w{background:#fff;color:var(--acc)}.btn.o{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.btn:disabled{opacity:.6;cursor:wait}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.stats small{font-size:11px;color:var(--mute)}.stats b{display:block;font-size:24px;margin:4px 0 2px}.stats span{font-size:11px;color:var(--good);font-weight:600}
+.grid{display:grid;grid-template-columns:1.85fr 1fr;gap:16px}
+.card h3{margin:0;font-size:15px}.card .sub{font-size:11px;color:var(--mute);margin:0 0 12px}
+.head{display:flex;justify-content:space-between;align-items:flex-start}
+select,input,textarea{font:inherit;font-size:14px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:9px;padding:9px 11px;width:100%}
+.head select{width:auto}
+select:focus,input:focus,textarea:focus,.btn:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+textarea{resize:vertical;min-height:80px}
+label{display:block;font-size:13px;font-weight:500;margin:12px 0 5px}
+.qa{display:flex;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.qa i{width:34px;height:34px;border-radius:9px;background:var(--accl);color:var(--acc);display:grid;place-items:center;font-style:normal}
+.qa div{flex:1}.qa b{display:block;font-size:12.5px}.qa small{font-size:11px;color:var(--mute)}.qa u{text-decoration:none;color:var(--mute)}
+.two{display:grid;grid-template-columns:minmax(280px,380px) 1fr;gap:16px;align-items:start}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.out{min-height:240px;overflow-wrap:anywhere;font-size:14.5px}
+.out h4{margin:14px 0 4px;font-size:15px}.out p{margin:6px 0}.out li{margin:3px 0 3px 20px;display:list-item;list-style:disc}
+.empty{color:var(--mute)}.err{color:var(--err);white-space:pre-wrap}
+.chat{display:flex;flex-direction:column;height:calc(100vh - 150px);min-height:380px}
+.msgs{flex:1;overflow:auto;display:flex;flex-direction:column;gap:10px;padding-bottom:10px}
+.m{max-width:80%;padding:10px 14px;border-radius:14px;font-size:14.5px}
+.m.u{align-self:flex-end;background:var(--acc);color:#fff;white-space:pre-wrap}.m.a{align-self:flex-start;background:var(--bg)}
+.send{display:flex;gap:8px;padding-top:12px;border-top:1px solid var(--line)}
+.bar{display:flex;justify-content:flex-end;margin-bottom:6px}
+svg text{font:10px Inter,sans-serif;fill:#8A93AA}
+@media(max-width:900px){body{flex-direction:column}aside{width:auto;height:auto;position:static;flex-direction:row;flex-wrap:wrap;align-items:center;padding:8px}.logo{padding:4px 8px}.promo{display:none}.nav{display:flex;flex-wrap:wrap}main{padding:16px}.stats{grid-template-columns:1fr 1fr}.grid,.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<aside>
+  <div class="logo"><i>✦</i><div><b>MarketAI</b><small>Digital Assistant</small></div></div>
+  <nav class="nav">
+    <a data-v="dashboard" class="on"><span>▦</span>Dashboard</a>
+    <a data-v="assistant"><span>✦</span>AI Assistant</a>
+    <a data-v="content"><span>✎</span>Content Generator</a>
+    <a data-v="strategy"><span>◎</span>Marketing Strategy</a>
+    <a data-v="analytics"><span>↗</span>Analytics</a>
+  </nav>
+  <div class="promo"><small>AI PRO</small><b>สร้างการตลาดให้ฉลาดขึ้น</b><small>วิเคราะห์ • สร้าง • วางแผน</small></div>
+  <nav class="nav"><a data-v="settings"><span>⚙</span>Settings</a></nav>
+</aside>
+
+<main>
+  <div class="top">
+    <div><small>Digital Marketing</small><h1 id="title">Dashboard</h1></div>
+    <div><span class="pill" id="status"><i></i><span>AI Offline</span></span><span class="av">CM</span></div>
+  </div>
+
+  <!-- Dashboard -->
+  <div class="view" id="v-dashboard">
+    <div class="hero">
+      <div><em>✦ AI POWERED</em><h2>สวัสดีครับ 👋<br>พร้อมให้ AI ช่วยทำการตลาดหรือยัง?</h2><p>สร้างคอนเทนต์ วิเคราะห์กลุ่มเป้าหมาย และวางกลยุทธ์ได้ในที่เดียว</p></div>
+      <button class="btn w" data-go="assistant">เริ่มใช้ AI Assistant →</button>
+    </div>
+    <div class="stats">
+      <div class="card"><small>ยอดเข้าชม</small><b>48.6K</b><span>↑ 18.4%</span></div>
+      <div class="card"><small>Engagement</small><b>8.42%</b><span>↑ 6.8%</span></div>
+      <div class="card"><small>Conversion</small><b>4.76%</b><span>↑ 12.2%</span></div>
+      <div class="card"><small>ยอดขาย</small><b>฿84,250</b><span>↑ 21.5%</span></div>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <div class="head"><div><h3>Marketing Performance</h3><p class="sub" id="csub">ผลการตลาด 7 วันที่ผ่านมา (ข้อมูลตัวอย่าง)</p></div>
+          <select id="range" aria-label="ช่วงเวลา"><option value="7">7 วัน</option><option value="30">30 วัน</option></select></div>
+        <div id="chart"></div>
+      </div>
+      <div class="card">
+        <h3>AI Quick Actions</h3><p class="sub">เครื่องมือยอดนิยม</p>
+        <div class="qa" data-go="content"><i>✎</i><div><b>สร้างคอนเทนต์</b><small>Caption + Hashtag + CTA</small></div><u>→</u></div>
+        <div class="qa" data-go="strategy"><i>◎</i><div><b>วางกลยุทธ์การตลาด</b><small>สร้างแผนจากข้อมูลธุรกิจ</small></div><u>→</u></div>
+        <div class="qa" data-go="assistant"><i>✦</i><div><b>ถาม AI</b><small>ปรึกษาปัญหาการตลาด</small></div><u>→</u></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Assistant -->
+  <div class="view" id="v-assistant" hidden>
+    <div class="card chat">
+      <div class="msgs" id="msgs"><div class="m a">สวัสดีครับ ผมคือ MarketAI ถามเรื่องการตลาดได้เลย เช่น "ร้านกาแฟเปิดใหม่ควรโปรโมตยังไง"</div></div>
+      <div class="send"><input id="q" placeholder="พิมพ์คำถามที่นี่…" aria-label="คำถาม"><button class="btn" id="qsend">ส่ง</button></div>
+    </div>
+  </div>
+
+  <!-- Content Generator -->
+  <div class="view" id="v-content" hidden>
+    <div class="two">
+      <div class="card">
+        <label style="margin-top:0">ประเภทเนื้อหา</label>
+        <select id="c-type"><option>โพสต์โซเชียลมีเดีย</option><option>แคปชั่นสั้น</option><option>คำโฆษณา (Ad copy)</option><option>อีเมลการตลาด</option><option>บทความ SEO</option><option>แผนคอนเทนต์ 7 วัน</option></select>
+        <div class="row">
+          <div><label>ช่องทาง</label><select id="c-plat"><option>Facebook</option><option>Instagram</option><option>TikTok</option><option>LINE OA</option><option>Google Ads</option><option>เว็บไซต์</option></select></div>
+          <div><label>โทนเสียง</label><select id="c-tone"><option>เป็นกันเอง</option><option>มืออาชีพ</option><option>สนุกสนาน</option><option>หรูหรา</option><option>เร่งให้ตัดสินใจ</option></select></div>
+        </div>
+        <label>สินค้า/ธุรกิจ</label><textarea id="c-prod" placeholder="เช่น ร้านกาแฟสเปเชียลตี้ย่านอารีย์ เปิดสาขาใหม่ ลด 20%"></textarea>
+        <label>กลุ่มเป้าหมาย (ไม่บังคับ)</label><input id="c-aud" placeholder="เช่น คนทำงานออฟฟิศ 25–35 ปี">
+        <button class="btn" style="width:100%;margin-top:16px" id="c-go">สร้างคอนเทนต์</button>
+      </div>
+      <div class="card"><div class="bar"><button class="btn o" data-copy="c-out">คัดลอก</button></div><div class="out" id="c-out"><span class="empty">ผลลัพธ์จะแสดงที่นี่</span></div></div>
+    </div>
+  </div>
+
+  <!-- Marketing Strategy -->
+  <div class="view" id="v-strategy" hidden>
+    <div class="two">
+      <div class="card">
+        <label style="margin-top:0">ธุรกิจของคุณ</label><textarea id="s-biz" placeholder="เช่น ร้านขายเสื้อผ้าออนไลน์ เน้นแฟชั่นวัยทำงาน ขายผ่าน IG และ Shopee"></textarea>
+        <label>เป้าหมาย</label><input id="s-goal" placeholder="เช่น เพิ่มยอดขาย 30% ใน 3 เดือน">
+        <div class="row">
+          <div><label>งบประมาณ/เดือน</label><input id="s-budget" placeholder="เช่น 20,000 บาท"></div>
+          <div><label>ระยะเวลา</label><select id="s-time"><option>1 เดือน</option><option selected>3 เดือน</option><option>6 เดือน</option><option>12 เดือน</option></select></div>
+        </div>
+        <button class="btn" style="width:100%;margin-top:16px" id="s-go">วางกลยุทธ์</button>
+      </div>
+      <div class="card"><div class="bar"><button class="btn o" data-copy="s-out">คัดลอก</button></div><div class="out" id="s-out"><span class="empty">แผนกลยุทธ์จะแสดงที่นี่</span></div></div>
+    </div>
+  </div>
+
+  <!-- Analytics -->
+  <div class="view" id="v-analytics" hidden>
+    <div class="two">
+      <div class="card">
+        <label style="margin-top:0">วางข้อมูลของคุณ</label>
+        <textarea id="a-data" style="min-height:200px" placeholder="เช่น&#10;Facebook: reach 12,000 / engagement 3.1% / ยอดขาย 20,000&#10;Instagram: reach 8,500 / engagement 6.2% / ยอดขาย 31,000&#10;งบโฆษณารวม 15,000 บาท"></textarea>
+        <button class="btn" style="width:100%;margin-top:16px" id="a-go">วิเคราะห์ด้วย AI</button>
+      </div>
+      <div class="card"><div class="bar"><button class="btn o" data-copy="a-out">คัดลอก</button></div><div class="out" id="a-out"><span class="empty">ผลวิเคราะห์จะแสดงที่นี่</span></div></div>
+    </div>
+  </div>
+
+  <!-- Settings -->
+  <div class="view" id="v-settings" hidden>
+    <div class="card" style="max-width:560px">
+      <label style="margin-top:0">OpenRouter API key</label>
+      <input id="key" type="password" placeholder="sk-or-..." autocomplete="off">
+      <p class="sub" style="margin-top:6px">รับ key ฟรีที่ <a href="https://openrouter.ai/keys" target="_blank" rel="noopener">openrouter.ai/keys</a> เก็บไว้ในเบราว์เซอร์เครื่องนี้เท่านั้น</p>
+      <label>โมเดล</label>
+      <input id="model" list="models">
+      <datalist id="models"><option value="openrouter/free"><option value="meta-llama/llama-3.3-70b-instruct:free"><option value="openai/gpt-oss-120b:free"><option value="google/gemma-3-27b-it:free"></datalist>
+      <p class="sub" style="margin-top:6px">ใช้โมเดลที่ลงท้าย :free เพื่อไม่เสียเงิน ถ้าใช้ไม่ได้ให้เปลี่ยนตามรายชื่อที่ openrouter.ai/models</p>
+      <button class="btn" id="save" style="margin-top:14px">บันทึก</button> <span id="saved" class="sub"></span>
+    </div>
+  </div>
+</main>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const st={get:k=>{try{return localStorage.getItem(k)||''}catch(e){return ''}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}};
+const TITLES={dashboard:'Dashboard',assistant:'AI Assistant',content:'Content Generator',strategy:'Marketing Strategy',analytics:'Analytics',settings:'Settings'};
+const SYSTEM='คุณคือ MarketAI ผู้เชี่ยวชาญการตลาดดิจิทัลในไทย ตอบเป็นภาษาไทยที่เป็นธรรมชาติ ใช้ได้จริง กระชับ จัดรูปแบบด้วยหัวข้อและบูลเล็ตเมื่อเหมาะสม ไม่แต่งตัวเลขที่ผู้ใช้ไม่ได้ให้ ถ้าข้อมูลไม่พอให้ระบุสิ่งที่สมมติไว้สั้น ๆ';
+
+function nav(v){$$('.view').forEach(e=>e.hidden=e.id!=='v-'+v);$$('aside .nav a').forEach(a=>a.classList.toggle('on',a.dataset.v===v));$('#title').textContent=TITLES[v]}
+$$('[data-v]').forEach(a=>a.onclick=()=>nav(a.dataset.v));
+$$('[data-go]').forEach(a=>a.onclick=()=>nav(a.dataset.go));
+
+function status(){const on=!!st.get('mk_key');$('#status').classList.toggle('on',on);$('#status span').textContent=on?'AI Online':'ยังไม่ตั้งค่า key'}
+$('#key').value=st.get('mk_key');$('#model').value=st.get('mk_model')||'openrouter/free';status();
+$('#save').onclick=()=>{st.set('mk_key',$('#key').value.trim());st.set('mk_model',$('#model').value.trim());status();$('#saved').textContent='บันทึกแล้ว'};
+
+async function ask(messages){
+  const key=st.get('mk_key'),model=st.get('mk_model')||'openrouter/free';
+  if(!key){nav('settings');throw new Error('กรุณาใส่ OpenRouter API key ในหน้า Settings ก่อน')}
+  const res=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key,'X-Title':'MarketAI'},body:JSON.stringify({model,messages:[{role:'system',content:SYSTEM},...messages]})});
+  const d=await res.json().catch(()=>({}));
+  if(!res.ok){const tips={401:'API key ไม่ถูกต้อง',402:'เครดิตไม่พอ หรือโมเดลนี้ไม่ฟรี ลองโมเดลที่ลงท้าย :free',404:'ไม่พบโมเดลนี้ ลองเปลี่ยนใน Settings',429:'ใช้เกินโควตา รอสักครู่หรือเปลี่ยนโมเดล'};
+    throw new Error('เชื่อมต่อไม่สำเร็จ ('+res.status+'): '+((d.error&&d.error.message)||res.statusText)+(tips[res.status]?'\n→ '+tips[res.status]:''))}
+  const t=d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content;
+  if(!t)throw new Error('โมเดลไม่ส่งคำตอบกลับมา ลองอีกครั้งหรือเปลี่ยนโมเดล');return t}
+
+const md=t=>t.replace(/&/g,'&amp;').replace(/</g,'&lt;').split('\n').map(l=>{l=l.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');let m=l.match(/^#{1,4}\s+(.*)/);if(m)return'<h4>'+m[1]+'</h4>';m=l.match(/^\s*[-*•]\s+(.*)/);if(m)return'<li>'+m[1]+'</li>';return l.trim()?'<p>'+l+'</p>':''}).join('');
+
+async function runForm(btn,out,prompt){
+  if(!prompt)return;const lab=btn.textContent;btn.disabled=true;btn.textContent='กำลังทำงาน…';
+  try{const t=await ask([{role:'user',content:prompt}]);$(out).innerHTML=md(t)}
+  catch(e){$(out).innerHTML='<span class="err"></span>';$(out).firstChild.textContent=e.message}
+  btn.disabled=false;btn.textContent=lab}
+const need=(v,m,o)=>{if(!v.trim()){$(o).innerHTML='<span class="err">'+m+'</span>';return false}return true};
+
+$('#c-go').onclick=e=>{const p=$('#c-prod').value;if(!need(p,'กรุณากรอกสินค้า/ธุรกิจ','#c-out'))return;
+  runForm(e.target,'#c-out',`งาน: ${$('#c-type').value}\nช่องทาง: ${$('#c-plat').value}\nโทนเสียง: ${$('#c-tone').value}\nสินค้า/ธุรกิจ: ${p}`+($('#c-aud').value?`\nกลุ่มเป้าหมาย: ${$('#c-aud').value}`:'')+'\nถ้าเป็นโซเชียล ให้แนบแฮชแท็กและ CTA ด้วย')};
+$('#s-go').onclick=e=>{const b=$('#s-biz').value;if(!need(b,'กรุณากรอกข้อมูลธุรกิจ','#s-out'))return;
+  runForm(e.target,'#s-out',`วางกลยุทธ์การตลาดดิจิทัลแบบละเอียด\nธุรกิจ: ${b}\nเป้าหมาย: ${$('#s-goal').value||'ไม่ระบุ'}\nงบ/เดือน: ${$('#s-budget').value||'ไม่ระบุ'}\nระยะเวลา: ${$('#s-time').value}\nให้ครอบคลุม: กลุ่มเป้าหมาย, ช่องทางหลัก, แผนรายเดือน, KPI, การแบ่งงบ`)};
+$('#a-go').onclick=e=>{const d=$('#a-data').value;if(!need(d,'กรุณาวางข้อมูลที่ต้องการวิเคราะห์','#a-out'))return;
+  runForm(e.target,'#a-out',`วิเคราะห์ข้อมูลการตลาดนี้ บอกจุดเด่น จุดอ่อน และสิ่งที่ควรทำต่อ 5 ข้อ เรียงตามความสำคัญ:\n${d}`)};
+
+$$('[data-copy]').forEach(b=>b.onclick=async()=>{try{await navigator.clipboard.writeText($('#'+b.dataset.copy).innerText);b.textContent='คัดลอกแล้ว';setTimeout(()=>b.textContent='คัดลอก',1500)}catch(e){}});
+
+let hist=[];
+function bubble(c,t,html){const d=document.createElement('div');d.className='m '+c;if(html)d.innerHTML=t;else d.textContent=t;$('#msgs').appendChild(d);$('#msgs').scrollTop=1e9;return d}
+async function chat(){const q=$('#q').value.trim();if(!q)return;$('#q').value='';bubble('u',q);hist.push({role:'user',content:q});
+  const w=bubble('a','กำลังคิด…');$('#qsend').disabled=true;
+  try{const t=await ask(hist);hist.push({role:'assistant',content:t});w.innerHTML=md(t)}
+  catch(e){hist.pop();w.className='m a err';w.textContent=e.message}
+  $('#qsend').disabled=false;$('#msgs').scrollTop=1e9}
+$('#qsend').onclick=chat;$('#q').addEventListener('keydown',e=>{if(e.key==='Enter')chat()});
+
+// Chart (sample data)
+const D7={l:['จ.','อ.','พ.','พฤ.','ศ.','ส.','อา.'],r:[4200,5100,4800,7200,6800,8900,11600],e:[1600,2200,1900,3100,2800,3900,5100]};
+function d30(){const l=[],r=[],e=[];for(let i=0;i<30;i++){l.push(i%5===0?(i+1)+'':'');const b=3500+i*220+Math.sin(i/2.2)*900;r.push(Math.round(b));e.push(Math.round(b*.42+Math.cos(i/1.7)*250))}return{l,r,e}}
+function path(p){let d='M'+p[0][0]+' '+p[0][1];for(let i=1;i<p.length;i++){const m=(p[i-1][0]+p[i][0])/2;d+=`C${m} ${p[i-1][1]} ${m} ${p[i][1]} ${p[i][0]} ${p[i][1]}`}return d}
+function draw(n){const D=n==30?d30():D7,W=800,H=340,L=46,R=14,T=14,B=26,mx=Math.ceil(Math.max(...D.r)/2000)*2000,cnt=D.r.length;
+  const X=i=>L+i*(W-L-R)/(cnt-1),Y=v=>T+(H-T-B)*(1-v/mx);let s=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="กราฟ Reach และ Engagement"><g>`;
+  for(let v=0;v<=mx;v+=mx/6){s+=`<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="#EEF0F6"/><text x="${L-8}" y="${Y(v)+3}" text-anchor="end">${v.toLocaleString()}</text>`}
+  D.l.forEach((t,i)=>s+=`<text x="${X(i)}" y="${H-8}" text-anchor="middle">${t}</text>`);
+  [[D.r,'#3BA3EE'],[D.e,'#F6678A']].forEach(([a,c])=>{const p=a.map((v,i)=>[X(i),Y(v)]);s+=`<path d="${path(p)}" fill="none" stroke="${c}" stroke-width="2"/>`;if(cnt<=7)p.forEach(q=>s+=`<circle cx="${q[0]}" cy="${q[1]}" r="3.5" fill="${c}"/>`)});
+  s+=`</g></svg><div style="display:flex;gap:16px;justify-content:center;font-size:11px;color:#7A839A"><span><b style="color:#3BA3EE">●</b> Reach</span><span><b style="color:#F6678A">●</b> Engagement</span></div>`;$('#chart').innerHTML=s}
+$('#range').onchange=e=>{draw(+e.target.value);$('#csub').textContent=`ผลการตลาด ${e.target.value} วันที่ผ่านมา (ข้อมูลตัวอย่าง)`};draw(7);
+</script>
+</body>
+</html>
